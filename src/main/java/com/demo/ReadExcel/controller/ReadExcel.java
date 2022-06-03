@@ -45,7 +45,6 @@ public class ReadExcel {
     public ResponseEntity<Resource> getExcel(@RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
         String project = System.getProperty("user.dir");
         String path = project+"\\src\\main\\resources";
-        String download = project+"\\src\\main\\resources\\static\\download\\download.txt";
         InputStream is = file.getInputStream();
         byte data[] = new byte[is.available()];
         is.read(data);
@@ -57,15 +56,12 @@ public class ReadExcel {
         Resource resource = null;
         try{
             resource = new UrlResource(f.toURI());
-
         }catch(MalformedURLException e){
             System.out.println(e.getMessage());
         }
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=\""+resource.getFilename()+"\"")
                 .body(resource);
     }
-
-
 //        StringBuilder sb = new StringBuilder();
 //        String fileN = file.getOriginalFilename();
 //        File f = new File(fileN);
@@ -99,4 +95,3 @@ public class ReadExcel {
 ////        mv.setViewName("inserted");
 ////        return mv;
 }
-
