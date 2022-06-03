@@ -1,6 +1,5 @@
 package com.demo.ReadExcel.controller;
 
-
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.httpobjects.Response;
@@ -42,7 +41,7 @@ public class ReadExcel {
     //C://Users/Ditsd/Downloads/ReadExcel/ReadExcelsrc/main/resources/static/download/download.txt
 
     @PostMapping("/upload-file")
-    public ResponseEntity<Resource> getExcel(@RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
+    public ResponseEntity<Resource> getExcel(@RequestParam("file") MultipartFile file) throws IOException {
         String project = System.getProperty("user.dir");
         String path = project+"\\src\\main\\resources";
         InputStream is = file.getInputStream();
