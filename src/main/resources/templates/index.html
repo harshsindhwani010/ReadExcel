@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Process Excel file</title>
+</head>
+<body>
+<h1>Upload Excel File.</h1>
+<form action="/processExcel" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xls,.xlsx">
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
