@@ -6,8 +6,11 @@ import org.apache.poi.ss.usermodel.*;
 import org.httpobjects.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,13 +38,14 @@ public class ReadExcel {
 
         return "index";
     }
+    //C:\Users\Ditsd\Downloads\ReadExcel\ReadExcel\src\main\resources\harsh.xlsx
+    //C://Users/Ditsd/Downloads/ReadExcel/ReadExcelsrc/main/resources/static/download/download.txt
 
     @PostMapping("/upload-file")
-    public /*ResponseEntity<String>*/ String getExcel(@RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
-        //System.out.println(context.getRealPath("resources"));
+    public ResponseEntity<Resource> getExcel(@RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
         String project = System.getProperty("user.dir");
         String path = project+"\\src\\main\\resources";
-        System.out.println(file.getInputStream());
+        String download = project+"\\src\\main\\resources\\static\\download\\download.txt";
         InputStream is = file.getInputStream();
         byte data[] = new byte[is.available()];
         is.read(data);
@@ -48,8 +53,16 @@ public class ReadExcel {
         fos.write(data);
         fos.flush();
         fos.close();
-        //return ResponseEntity.ok("Upload Successfully");
-        return "inserted";
+        File f = ResourceUtils.getFile("classpath:downloadReport.txt");
+        Resource resource = null;
+        try{
+            resource = new UrlResource(f.toURI());
+
+        }catch(MalformedURLException e){
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=\""+resource.getFilename()+"\"")
+                .body(resource);
     }
 
 
